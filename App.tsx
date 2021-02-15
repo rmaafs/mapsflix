@@ -1,23 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from '@react-navigation/native'
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+import TabOneScreen from './screens/TabOneScreen'
+import ViewCapitulos from './screens/ViewCapitulos'
+import ViewVideo from './screens/ViewVideo'
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+const Stack = createStackNavigator();
+
+const App = () => {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
-    );
-  }
+        <NavigationContainer>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false
+                }}
+                initialRouteName={'TabOneScreen'}
+            >
+                <Stack.Screen name="TabOneScreen" component={TabOneScreen} />
+                <Stack.Screen name="ViewCapitulos" component={ViewCapitulos} />
+                <Stack.Screen name="ViewVideo" component={ViewVideo} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
 }
+
+export default App;

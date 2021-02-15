@@ -1,40 +1,48 @@
-import * as React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Button } from 'react-native-elements'
 import { Text, View } from '../components/Themed';
 
-export default function TabOneScreen() {
+export default function TabOneScreen({ navigation }) {
 
-  const listaSeries = [
-    {
-      id: 1,
-      name: "Bob Esponja",
-      description: "Temporada 1",
-      img: "https://video.rmaafs.com/miniaturas/bobEsponja1.png",
-      caps: 10
-    },
-    {
-      id: 2,
-      name: "Prueba 2",
-      description: "Soy una descripción 2",
-      img: "https://video.rmaafs.com/miniaturas/bobEsponja1.png",
-      caps: 30
-    }
-  ];
+  const [isLoading, setLoading] = useState(true);
+  const [listaSeries, setData] = useState([]);
 
+  useEffect(() => {
+    fetch('https://video.rmaafs.com/series.json')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <View style={styles.container}>
-      {renderLista()}
+      {isLoading ? <ActivityIndicator /> : (
+        renderLista()
+      )}
+
     </View>
   );
+
+  function getMoviesFromApi() {
+    return fetch('https://video.rmaafs.com/series.json')
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        return json;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   function renderLista() {
     const renderItem = ({ item }) => (
       <TouchableOpacity
-        style={{ 
+        style={{
           marginBottom: 2,
           backgroundColor: 'rgb(13, 17, 23)',
           width: 200,
@@ -42,10 +50,12 @@ export default function TabOneScreen() {
           margin: 10,
           padding: 20,
           alignItems: 'center',
-          borderRadius: 10
+          borderRadius: 10,
+          marginTop: 40
         }}
-        onPress={() => console.log(item)
-        }
+        onPress={() => navigation.navigate("ViewCapitulos", {
+          item
+        })}
       >
 
         <Image
@@ -62,7 +72,7 @@ export default function TabOneScreen() {
           color: 'white',
           fontWeight: 'bold'
         }}>{item.name}</Text>
-        
+
         <Text style={{
           color: 'gray'
         }}>{item.description}</Text>
@@ -72,7 +82,7 @@ export default function TabOneScreen() {
           fontSize: 10
         }}>{item.caps} capítulos</Text>
 
-      </TouchableOpacity>
+      </TouchableOpacity >
     )
 
     return (

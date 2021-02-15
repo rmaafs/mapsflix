@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import AsyncStorage from '@react-native-community/async-storage'
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const ViewCapitulos = ({ route, navigation }) => {
 
@@ -24,6 +25,8 @@ const ViewCapitulos = ({ route, navigation }) => {
     const [capitulos, setData] = useState([]);
 
     useEffect(() => {
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT)
+        
         fetch(item.url_capitulos)
             .then((response) => response.json())
             .then((json) => setData(json))

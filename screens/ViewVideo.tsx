@@ -8,6 +8,7 @@ import {
 import { Video } from 'expo-av'
 import VideoPlayer from 'expo-video-player'
 import AsyncStorage from '@react-native-community/async-storage'
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const ViewVideo = ({ route, navigation }) => {
 
@@ -40,11 +41,18 @@ const ViewVideo = ({ route, navigation }) => {
                 videoProps={{
                     shouldPlay: true,
                     resizeMode: Video.RESIZE_MODE_CONTAIN,
+                    useNativeControls: true,
                     source: {
                         uri: item.url,
                     },
                 }}
                 inFullscreen={true}
+                switchToLandscape={() => 
+                    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT)
+                }
+                switchToPortrait={() => 
+                    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT)
+                }
             />
         </View>
     );

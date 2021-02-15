@@ -9,11 +9,16 @@ import {
     ActivityIndicator
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import AsyncStorage from '@react-native-community/async-storage'
 
 const ViewCapitulos = ({ route, navigation }) => {
 
     var width = Dimensions.get('window').width - 30;
     let { item } = route.params;
+    let vistos: String[] = [];
+    AsyncStorage.getItem("vistos", (err, result) => {
+        vistos = JSON.parse(result || "[]");
+    })
 
     const [isLoading, setLoading] = useState(true);
     const [capitulos, setData] = useState([]);
@@ -24,7 +29,18 @@ const ViewCapitulos = ({ route, navigation }) => {
             .then((json) => setData(json))
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
+
+            readData;
     }, []);
+
+    const readData = async () => {
+        try {
+            const result = await AsyncStorage.getItem("vistos")
+            vistos = JSON.parse(result || "[]");
+        } catch (e) {
+            console.log('Failed to fetch the data from storage')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -91,9 +107,9 @@ const ViewCapitulos = ({ route, navigation }) => {
             >
 
                 <Text style={{
-                    color: 'white',
+                    color: keyExists(item.nombre, vistos) ? 'green' : 'white',
                     fontWeight: 'bold'
-                }}>{item.nombre}</Text>
+                }}>{item.nombre + (keyExists(item.nombre, vistos) ? " (Visto)" : "")}</Text>
 
                 <Text style={{
                     color: 'gray'
@@ -131,6 +147,18 @@ const ViewCapitulos = ({ route, navigation }) => {
                 }}
             />
         );
+    }
+
+    function keyExists(key, search) {
+        if (!search || (search.constructor !== Array && search.constructor !== Object)) {
+            return false;
+        }
+        for (var i = 0; i < search.length; i++) {
+            if (search[i] === key) {
+                return true;
+            }
+        }
+        return key in search;
     }
 }
 

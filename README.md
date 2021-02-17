@@ -3,7 +3,7 @@ Simple aplicación móvil en React Native para ver series/películas de forma pr
 
 ---
 
-####Series
+#### Series
 
 La aplicación necesita un JSON principal para leer las series disponibles.
 Al configurar el JSON, se debe poner la ruta en mapsflix-config.json, no importa si es local o en línea en un servidor.
@@ -31,7 +31,7 @@ Ejemplo del formato de este JSON:
 
 ---
 
-####Capítulos
+#### Capítulos
 Después, por cada serie, el campo `"url_capitulos"` vemos que apunta a un JSON, el formato de ese JSON nuevo debe tener todos los capítulos, por ejemplo:
 
     [

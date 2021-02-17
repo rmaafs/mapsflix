@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-
-import { Button } from 'react-native-elements'
 import { Text, View } from '../components/Themed';
 
 export default function TabOneScreen({ navigation }) {
@@ -26,17 +24,6 @@ export default function TabOneScreen({ navigation }) {
 
     </View>
   );
-
-  function getMoviesFromApi() {
-    return fetch('https://video.rmaafs.com/series.json')
-      .then((response) => response.json())
-      .then((json) => {
-        return json;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   function renderLista() {
     const renderItem = ({ item }) => (

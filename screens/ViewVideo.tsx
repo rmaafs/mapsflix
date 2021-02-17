@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import {
     View,
-    StyleSheet,
-    Dimensions
+    StyleSheet
 } from "react-native";
 
 import { Video } from 'expo-av'
 import VideoPlayer from 'expo-video-player'
 import AsyncStorage from '@react-native-community/async-storage'
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { useKeepAwake } from 'expo-keep-awake';
 
 const ViewVideo = ({ route, navigation }) => {
 
-    var width = Dimensions.get('window').width - 30;
     let { item } = route.params;
     let vistos: String[] = [];
+    useKeepAwake();
 
     useEffect(() => {
         readData()

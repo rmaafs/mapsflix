@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Text, View } from '../components/Themed';
+import config from '../mapsflix-config.json';
 
 export default function TabOneScreen({ navigation }) {
 
@@ -9,7 +10,7 @@ export default function TabOneScreen({ navigation }) {
   const [listaSeries, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://video.rmaafs.com/series.json')
+    fetch(config.url)
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => console.error(error))
